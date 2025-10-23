@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -10,10 +11,14 @@ import java.util.List;
 import static jakarta.transaction.Transactional.TxType.REQUIRED;
 import static jakarta.transaction.Transactional.TxType.SUPPORTS;
 
+@ApplicationScoped
 public class BookService {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    IsbnGenerator isbnGenerator;
 
     @Transactional(SUPPORTS)
     public Book find(Long id) {
@@ -33,6 +38,7 @@ public class BookService {
 
     @Transactional(REQUIRED)
     public Book create(Book book) {
+        book.setIsbn(isbnGenerator.generateIsbn());
         em.persist(book);
         return book;
     }

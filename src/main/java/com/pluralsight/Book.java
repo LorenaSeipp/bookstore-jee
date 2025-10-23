@@ -1,9 +1,13 @@
 package com.pluralsight;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "T_BOOK")
@@ -14,15 +18,28 @@ public class Book {
     private Long id;
     @Column(length = 50)
     private String isbn;
+
     @Column(length = 100)
+    @NotNull
+    @Size(min = 1, max = 100)
     private String title;
+
     @Column(length = 10000)
+    @Size(min = 10, max = 10000)
     private String description;
+
+    @NotNull
+    @Min(1)
     private BigDecimal price;
+
     @Column(name = "publication_date")
+    @Past
     private LocalDate publicationDate;
+
     @Column(name = "nb_of_pages")
+    @Min(40)
     private Integer nbOfPages;
+
     @Column(name = "image_url")
     private String imageURL;
 
