@@ -4,6 +4,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -19,18 +20,18 @@ public class BookResourceTest {
             when()
             .get("/api/books").
             then()
-            .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
     public void shouldGetABook() {
         given()
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-            .pathParam("id", 1).
+            .pathParam("id", 1005).
             when()
             .get("/api/books/{id}").
             then()
-            .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -40,7 +41,7 @@ public class BookResourceTest {
             when()
             .get("/api/books/count").
             then()
-            .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+            .statusCode(Response.Status.OK.getStatusCode());
     }
 
     @Test
@@ -53,27 +54,16 @@ public class BookResourceTest {
             .post("/api/books").
             then()
             .statusCode(Response.Status.CREATED.getStatusCode())
-            .body("id", is(1));
+            .body("id", is(6666));
     }
 
     @Test
     public void shouldDeleteABook() {
         given()
-            .pathParam("id", 1).
+            .pathParam("id", 1008).
             when()
             .delete("/api/books/{id}").
             then()
             .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
-
-    @Test
-    public void testHelloEndpoint() {
-        given()
-            .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
-            .when().get("/api/books")
-            .then()
-            .statusCode(200)
-            .body(is("Hello Jakarta EE 10"));
-    }
-
 }
